@@ -1,0 +1,14 @@
+li a {
+    color: white;
+    text-decoration: none;
+}
+
+ul {
+    list-style-type: none;
+    font-size: 2rem;
+}
+body {
+    background: white url("images/background.gif") no-repeat;
+    text-align: center;
+    align-content: center;
+}
