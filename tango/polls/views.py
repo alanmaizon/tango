@@ -4,9 +4,11 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
-
+from django.contrib.auth.forms import UserCreationForm
+from django.urls import reverse_lazy
+from django.views.generic.edit import CreateView
 from .models import Choice, Question
-
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     latest_question_list = Question.objects.order_by("-pub_date")[:5]
@@ -54,7 +56,7 @@ class ResultsView(generic.DetailView):
     model = Question
     template_name = "polls/results.html"
 
-
+@login_required
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     try:
@@ -81,3 +83,9 @@ def vote(request, question_id):
 def detail(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     return render(request, "polls/detail.html", {"question": question})
+
+class RegisterView(CreateView):
+    form_class = UserCreationForm
+    template_name = 'registration/register.html'
+    success_url = reverse_lazy('login')
+    
