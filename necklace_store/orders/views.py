@@ -1,6 +1,7 @@
+
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
-from .models import Order
+from .models import Order, ChainType, ChainLength, Material
 from .forms import CustomUserCreationForm, ProductForm
 
 def create_order_and_product(request):
@@ -20,17 +21,16 @@ def create_order_and_product(request):
 
 
 def create_product(request):
-    if request.method == "POST":
-        form = ProductForm(request.POST)
-        if form.is_valid():
-            product = form.save(commit=False)
-            product.calculate_final_price()
-            product.generate_stock_code()
-            product.save()
-            return redirect('order_detail', pk=product.order.id)  # Replace with your order detail URL
-    else:
-        form = ProductForm()
-    return render(request, 'orders/product_form.html', {'form': form})
+    chain_types = ChainType.objects.all()
+    chain_lengths = ChainLength.objects.all()
+    materials = Material.objects.all()
+    # Render the form with options
+    return render(request, "orders/product_form.html", {
+        "form": ProductForm,
+        "chain_types": [{"id": ct.id, "name": ct.type_name, "price": ct.price} for ct in chain_types],
+        "chain_lengths": [{"id": cl.id, "name": cl.length, "price": cl.price} for cl in chain_lengths],
+        "materials": [{"id": m.id, "name": m.material_name, "price": m.price} for m in materials],
+    })
 
 def register(request):
     if request.method == "POST":

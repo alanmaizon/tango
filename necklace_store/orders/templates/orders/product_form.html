@@ -3,10 +3,33 @@
 {% block title %}Customize Necklace{% endblock %}
 
 {% block content %}
-<h2>Customize Your Necklace</h2>
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Save Product</button>
-</form>
+<div class="container">
+    <h2 class="mt-4">Customize Your Necklace</h2>
+    <form method="POST" class="mt-4">
+        {% csrf_token %}
+        <div class="form-group mb-3">
+            {{ form.custom_name.label_tag }}
+            {{ form.custom_name }}
+        </div>
+        <div class="form-group mb-3">
+            {{ form.chain_type.label_tag }}
+            {{ form.chain_type }}
+        </div>
+        <div class="form-group mb-3">
+            {{ form.chain_length.label_tag }}
+            {{ form.chain_length }}
+        </div>
+        <div class="form-group mb-3">
+            {{ form.material.label_tag }}
+            {{ form.material }}
+        </div>
+        <p id="price-display">Price: $<span id="price">0.00</span></p>
+        <div class="form-group mb-3">
+            {{ form.font_style.label_tag }}
+            {{ form.font_style }}
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Save Product</button>
+    </form>
+</div>
 {% endblock %}
