@@ -63,6 +63,9 @@ class Product(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="products", blank=True, null=True)
 
     def calculate_final_price(self):
+        print(f"Chain Type Price: {self.chain_type.price if self.chain_type else 'None'}")
+        print(f"Chain Length Price: {self.chain_length.price if self.chain_length else 'None'}")
+        print(f"Material Price: {self.material.price if self.material else 'None'}")
         self.final_price = (
             (self.chain_type.price if self.chain_type else 0) +
             (self.chain_length.price if self.chain_length else 0) +
@@ -70,12 +73,16 @@ class Product(models.Model):
         )
 
     def generate_stock_code(self):
+        print(f"Chain Type: {self.chain_type.type_name if self.chain_type else 'None'}")
+        print(f"Chain Length: {self.chain_length.length if self.chain_length else 'None'}")
+        print(f"Material: {self.material.material_name if self.material else 'None'}")
         code_parts = [
             self.chain_type.type_name.upper() if self.chain_type else "",
             self.chain_length.length.replace(" ", "-").upper() if self.chain_length else "",
             self.material.material_name[0].upper() if self.material else ""
         ]
         self.stock_code = "-".join(code_parts)
+
 
     def save(self, *args, **kwargs):
         self.calculate_final_price()

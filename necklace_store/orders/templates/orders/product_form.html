@@ -5,31 +5,40 @@
 {% block content %}
 <div class="container">
     <h2 class="mt-4">Customize Your Necklace</h2>
-    <form method="POST" class="mt-4">
+    <form method="POST">
         {% csrf_token %}
-        <div class="form-group mb-3">
-            {{ form.custom_name.label_tag }}
-            {{ form.custom_name }}
-        </div>
-        <div class="form-group mb-3">
-            {{ form.chain_type.label_tag }}
-            {{ form.chain_type }}
-        </div>
-        <div class="form-group mb-3">
-            {{ form.chain_length.label_tag }}
-            {{ form.chain_length }}
-        </div>
-        <div class="form-group mb-3">
-            {{ form.material.label_tag }}
-            {{ form.material }}
-        </div>
-        <p id="price-display">Price: $<span id="price">0.00</span></p>
-        <div class="form-group mb-3">
-            {{ form.font_style.label_tag }}
-            {{ form.font_style }}
-        </div>
+        {{ form.custom_name.label_tag }}
+        {{ form.custom_name }}
+    
+        <label for="chain_type">Chain Type</label>
+        <select name="chain_type" id="chain_type" class="form-control">
+            {% for type in chain_types %}
+                <option value="{{ type.id }}">{{ type.type_name }} - ${{ type.price }}</option>
+            {% endfor %}
+        </select>
+    
+        <label for="chain_length">Chain Length</label>
+        <select name="chain_length" id="chain_length" class="form-control">
+            {% for length in chain_lengths %}
+                <option value="{{ length.id }}">{{ length.length }} - ${{ length.price }}</option>
+            {% endfor %}
+        </select>
+    
+        <label for="material">Material</label>
+        <select name="material" id="material" class="form-control">
+            {% for material in materials %}
+                <option value="{{ material.id }}">{{ material.material_name }} - ${{ material.price }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="font_style">Font Style</label>
+        <select name="font_style" id="font_style" class="form-control">
+            {% for font_style in font_styles %}
+                <option value="{{ font_style.id }}">{{ font_style.style_name }}</option>
+            {% endfor %}
+        </select>
         
-        <button type="submit" class="btn btn-primary">Save Product</button>
-    </form>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>    
 </div>
 {% endblock %}
